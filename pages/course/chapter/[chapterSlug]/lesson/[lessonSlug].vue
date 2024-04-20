@@ -1,31 +1,33 @@
 <template>
   <div>
-    <p class="mt-0 uppercase font-bold text-slate-400 mb-1">
+    <p class="mt-0 mb-1 font-bold uppercase text-slate-400">
       Lesson {{ chapter.number }} - {{ lesson.number }}
     </p>
     <h2 class="my-0">{{ lesson.title }}</h2>
-    <div class="flex space-x-4 mt-2 mb-8">
-      <a
+    <div class="flex mt-2 mb-8 space-x-4">
+      <NuxtLink
         v-if="lesson.sourceUrl"
-        class="font-normal text-md text-gray-500"
-        :href="lesson.sourceUrl"
+        class="font-normal text-gray-500 text-md"
+        :to="lesson.sourceUrl"
       >
         Download Source Code
-      </a>
-      <a
+      </NuxtLink>
+      <NuxtLink
         v-if="lesson.downloadUrl"
-        class="font-normal text-md text-gray-500"
-        :href="lesson.downloadUrl"
+        class="font-normal text-gray-500 text-md"
+        :to="lesson.downloadUrl"
       >
         Download Video
-      </a>
+      </NuxtLink>
     </div>
+    <VideoPlayer v-if="lesson.videoId" :videoId="lesson.videoId" />
     <p>{{ lesson.text }}</p>
   </div>
 </template>
 
 <script setup>
 const course = useCourse();
+console.log("course?? ", course);
 const route = useRoute();
 
 const chapter = computed(() => {
@@ -39,4 +41,12 @@ const lesson = computed(() => {
     (lesson) => lesson.slug === route.params.lessonSlug
   );
 });
+
+const title = computed(() => {
+  return `${lesson.value.title} | ${chapter.value.title} | Mastering Nuxt 3`;
+})
+
+useHead({
+  title: title.value
+})
 </script>
