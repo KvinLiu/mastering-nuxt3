@@ -22,6 +22,7 @@
     </div>
     <VideoPlayer v-if="lesson.videoId" :videoId="lesson.videoId" />
     <p>{{ lesson.text }}</p>
+    <LessonCompleteButton />
   </div>
 </template>
 
@@ -32,21 +33,21 @@ const route = useRoute();
 
 const chapter = computed(() => {
   return course.chapters.find(
-    (chapter) => chapter.slug === route.params.chapterSlug
+    (chapter) => chapter.slug === route.params.chapterSlug,
   );
 });
 
 const lesson = computed(() => {
   return chapter.value.lessons.find(
-    (lesson) => lesson.slug === route.params.lessonSlug
+    (lesson) => lesson.slug === route.params.lessonSlug,
   );
 });
 
 const title = computed(() => {
   return `${lesson.value.title} | ${chapter.value.title} | Mastering Nuxt 3`;
-})
+});
 
 useHead({
-  title: title.value
-})
+  title,
+});
 </script>

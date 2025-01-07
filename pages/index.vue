@@ -1,1 +1,1 @@
-<template>This is a nuxt3 project</template>
+<template>This is Hello, worlda nuxt3 project</template>
