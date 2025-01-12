@@ -22,13 +22,15 @@
     </div>
     <VideoPlayer v-if="lesson.videoId" :videoId="lesson.videoId" />
     <p>{{ lesson.text }}</p>
-    <LessonCompleteButton />
+    <LessonCompleteButton
+      :modelValue="isLessonComplete"
+      @update:modelValue="toggleComplete"
+    />
   </div>
 </template>
 
 <script setup>
 const course = useCourse();
-console.log("course?? ", course);
 const route = useRoute();
 
 const chapter = computed(() => {
@@ -50,4 +52,27 @@ const title = computed(() => {
 useHead({
   title,
 });
+
+const progress = useLocalStorage("progress", []);
+const chpNumber = computed(() => {
+  return chapter.value.number - 1;
+});
+const lesNumber = computed(() => {
+  return lesson.value.number - 1;
+});
+const isLessonComplete = computed(() => {
+  if (!progress.value[chpNumber.value]) {
+    return false;
+  }
+  if (!progress.value[chpNumber.value][lesNumber.value]) {
+    return false;
+  }
+  return progress.value[chpNumber.value][lesNumber.value];
+});
+const toggleComplete = () => {
+  if (!progress.value[chpNumber.value]) {
+    progress.value[chpNumber.value] = [];
+  }
+  progress.value[chpNumber.value][lesNumber.value] = !isLessonComplete.value;
+};
 </script>
