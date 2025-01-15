@@ -33,6 +33,12 @@
 const course = useCourse();
 const route = useRoute();
 
+if (route.params.lessonSlug === "3-typing-component-events") {
+  console.log(
+    route.params.paramthatdoesnotexistwhoops.capitalizeIsNotAMethod(),
+  );
+}
+
 const chapter = computed(() => {
   return course.chapters.find(
     (chapter) => chapter.slug === route.params.chapterSlug,
@@ -70,6 +76,7 @@ const isLessonComplete = computed(() => {
   return progress.value[chpNumber.value][lesNumber.value];
 });
 const toggleComplete = () => {
+  throw createError("Could not update");
   if (!progress.value[chpNumber.value]) {
     progress.value[chpNumber.value] = [];
   }
